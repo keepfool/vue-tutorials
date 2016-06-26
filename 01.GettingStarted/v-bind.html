@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="styles/demo.css" />
+	</head>
+	<body>
+		<div id="app">
+			<ul class="pagination">
+				<li v-for="n in pageCount">
+					<a href="javascripit:void(0)" v-bind:class="activeNumber === n + 1 ? 'active' : ''">{{ n + 1 }}</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="js/vue.js"></script>
+	<script>
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				activeNumber: 1,
+				pageCount: 10
+			}
+		})
+	</script>
+</html>
