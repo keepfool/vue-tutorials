@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div id="app">
+			<!-- 3. my-component只能在#app下使用-->
+			<my-component></my-component>
+		</div>
+
+		<div id="app2">
+			<!-- 不能使用my-component组件，因为my-component是一个局部组件，它属于#app-->
+			<my-component></my-component>
+		</div>
+
+	</body>
+	<script src="js/vue.js"></script>
+	<script>
+		// 1.创建一个组件构造器
+		var myComponent = Vue.extend({
+			template: '<div>This is my first component!</div>'
+		})
+
+		new Vue({
+			el: '#app',
+			components: {
+				// 2. 将myComponent组件注册到Vue实例下
+				'my-component': myComponent
+			}
+		});
+		
+		new Vue({
+			el: '#app2'
+		});
+	</script>
+
+</html>

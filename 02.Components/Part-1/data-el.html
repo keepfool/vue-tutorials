@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div id="app">
+			<my-component>
+			</my-component>
+
+			<my-component>
+			</my-component>
+		</div>
+		<template id="myComponent">
+			<p>
+				<input v-model="a" /> {{ a }}
+			</p>
+		</template>
+	</body>
+	<script src="js/vue.js">
+	</script>
+
+	<script>
+
+
+		Vue.component('my-component', {
+			data: function(){
+				return {a : 1}
+			}
+		})
+
+		new Vue({
+			el: '#app'
+		})
+	</script>
+
+</html>

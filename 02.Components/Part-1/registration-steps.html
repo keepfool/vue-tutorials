@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!-- 3. #app是Vue实例挂载的元素，应该在挂载元素范围内使用组件-->
+			<my-component></my-component>
+		</div>
+	</body>
+	<script src="js/vue.js"></script>
+	<script>
+	
+		// 1.创建一个组件构造器
+		var myComponent = Vue.extend({
+			template: '<div>This is my first component!</div>'
+		})
+		
+		// 2.注册组件，并指定组件的标签，组件的HTML标签为<my-component>
+		Vue.component('my-component', myComponent)
+		
+		new Vue({
+			el: '#app'
+		});
+		
+		
+		
+	</script>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app1">
+			<my-component></my-component>
+		</div>
+		
+		<div id="app2">
+			<my-component></my-component>
+		</div>
+		
+		<!--该组件不会被渲染-->
+		<my-component></my-component>
+	</body>
+	<script src="js/vue.js"></script>
+	<script>
+		var myComponent = Vue.extend({
+			template: '<div>This is a component!</div>'
+		})
+		
+		Vue.component('my-component', myComponent)
+		
+		var app1 = new Vue({
+			el: '#app1'
+		});
+		
+		var app2 = new Vue({
+			el: '#app2'
+		})
+	</script>
+</html>
