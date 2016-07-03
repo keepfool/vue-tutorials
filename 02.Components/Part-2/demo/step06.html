@@ -37,7 +37,7 @@
 				<tbody>
 					<tr v-for="(index,entry) in dataList | filterBy searchKey">
 						<td v-for="col in columns">
-							<span v-if="col.isKey"><a href="javascript:void(0)" @click="openEditItemDialog(index, 'Edit Item - ' + entry[col.name])">{{entry[col.name]}}</a></span>
+							<span v-if="col.isKey"><a href="javascript:void(0)" @click="openEditItemDialog(entry[col.name])">{{entry[col.name]}}</a></span>
 							<span v-else>{{entry[col.name]}}</span>
 						</td>
 						<td class="text-center">
@@ -62,20 +62,21 @@
 						<header class="dialog-header">
 							<h1 class="dialog-title">{{ title }}</h1>
 						</header>
-
 						<div class="dialog-body">
 							<div v-for="field in fields" class="form-group">
-								<label>{{ field.name |capitalize }}</label>
+								<label>{{ field.name }}</label>
 								<select v-if="field.dataSource" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
 										<option v-for="opt in field.dataSource" :value="opt">{{ opt }}</option>
 								</select>
 								<input v-else type="text" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
 							</div>
 						</div>
-						<footer class="form-group dialog-footer">
-							<label></label>
-							<button class="btn-save" v-on:click="save">Save</button>
-							<button class="btn-close" v-on:click="close">Close</button>
+						<footer class="dialog-footer">
+							<div class="form-group">
+								<label></label>
+								<button class="btn-save" v-on:click="save">Save</button>
+								<button class="btn-close" v-on:click="close">Close</button>
+							</div>
 						</footer>
 					</div>
 				</div>
@@ -120,17 +121,27 @@
 					}
 				}
 			})
-
+		
+		
 			Vue.component('simple-grid', {
 				template: '#grid-template',
+				props: ['dataList', 'columns', 'searchKey'],
 				data: function() {
 					return {
 						mode: 0,
 						title: '',
+						keyColumn: '',
 						item: {}
 					}
 				},
-				props: ['dataList', 'columns', 'searchKey'],
+				ready(){
+					for (var i = 0; i < this.columns.length; i++) {
+						if (this.columns[i].isKey) {
+							this.keyColumn = this.columns[i]['name']
+							break;
+						}
+					}
+				},
 				methods: {
 					openNewItemDialog: function(title) {
 						// 对话框的标题
@@ -142,16 +153,19 @@
 						// 广播事件，showDialog是modal-dialog组件的一个方法，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
-					openEditItemDialog: function(index, title) {
+					openEditItemDialog: function(key) {
+						// 根据主键查找当前修改的数据
+						var currentItem = this.findItemByKey(key)
 						// 对话框的标题
-						this.title = title
+						this.title = 'Edit Item - ' + key
 						// mode = 2表示修改模式
 						this.mode = 2
-						// 初始化this.item
-						this.item = this.initItemForUpdate(this.dataList[index])
+						// 将选中的数据拷贝到this.item
+						this.item = this.initItemForUpdate(currentItem)
 						// 广播事件，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
+					
 					// 弹出修改数据的对话框时，使用对象的深拷贝
 					initItemForUpdate: function(p) {
 						var c = c || {};
@@ -159,24 +173,26 @@
 							// 属性i是否为p对象的自有属性
 							if (p.hasOwnProperty(i)) {
 								if (typeof p[i] === 'object') {
-									c[i] = Array.isArray(p[i]) ? [] : {}
-									deepCopy(p[i], c[i])
+									c[i] = Array.isArray(p[i]) ? [] : {};
+									deepCopy(p[i], c[i]);
 								} else {
 									// 属性是基础类型时，直接拷贝
-									c[i] = p[i]
+									c[i] = p[i];
 								}
 							}
 						}
 						return c;
 					},
-					getKeyColumn: function() {
-						for (var i = 0; i < this.columns.length; i++) {
-							if (this.columns[i].isKey) {
-								return this.columns[i].name
+					findItemByKey: function(key){
+						var keyColumn = this.keyColumn
+						for(var i = 0; i < this.dataList.length; i++){
+							if(this.dataList[i][keyColumn] === key){
+								return this.dataList[i]
 							}
 						}
 					},
-					itemExists: function(keyColumn) {
+					itemExists: function() {
+						var keyColumn = this.keyColumn
 						for (var i = 0; i < this.dataList.length; i++) {
 							if (this.item[keyColumn] === this.dataList[i][keyColumn])
 								return true;
@@ -184,8 +200,8 @@
 						return false;
 					},
 					createItem: function() {
-						var keyColumn = this.getKeyColumn()
-						if (!this.itemExists(keyColumn)) {
+						var keyColumn = this.keyColumn
+						if (!this.itemExists()) {
 							// 将item追加到dataList
 							this.dataList.push(this.item)
 							// 广播事件，传入参数false表示隐藏对话框
@@ -200,7 +216,7 @@
 					updateItem: function() {
 
 						// 获取主键列
-						var keyColumn = this.getKeyColumn()
+						var keyColumn = this.keyColumn
 
 						for (var i = 0; i < this.dataList.length; i++) {
 							// 根据主键查找要修改的数据，然后将this.item数据更新到this.dataList[i]
