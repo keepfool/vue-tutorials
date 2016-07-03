@@ -148,13 +148,26 @@
 						// mode = 2表示修改模式
 						this.mode = 2
 						// 初始化this.item
-						this.item = {}
-						// 将选中行的数据拷贝到this.item
-						for (var i in this.dataList[index]) {
-							this.item[i] = this.dataList[index][i]
-						}
+						this.item = this.initItemForUpdate(this.dataList[index])
 						// 广播事件，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
+					},
+					// 弹出修改数据的对话框时，使用对象的深拷贝
+					initItemForUpdate: function(p) {
+						var c = c || {};
+						for (var i in p) {
+							// 属性i是否为p对象的自有属性
+							if (p.hasOwnProperty(i)) {
+								if (typeof p[i] === 'object') {
+									c[i] = Array.isArray(p[i]) ? [] : {}
+									deepCopy(p[i], c[i])
+								} else {
+									// 属性是基础类型时，直接拷贝
+									c[i] = p[i]
+								}
+							}
+						}
+						return c;
 					},
 					getKeyColumn: function() {
 						for (var i = 0; i < this.columns.length; i++) {
@@ -175,9 +188,9 @@
 						if (!this.itemExists(keyColumn)) {
 							// 将item追加到dataList
 							this.dataList.push(this.item)
-								// 广播事件，传入参数false表示隐藏对话框
+							// 广播事件，传入参数false表示隐藏对话框
 							this.$broadcast('showDialog', false)
-								// 新建完数据后，重置item对象
+							// 新建完数据后，重置item对象
 							this.item = {}
 						} else {
 							alert(keyColumn + ' "' + this.item[keyColumn] + '" is already exists')
@@ -200,7 +213,7 @@
 						}
 						// 广播事件，传入参数false表示隐藏对话框
 						this.$broadcast('showDialog', false)
-							// 修改完数据后，重置item对象
+						// 修改完数据后，重置item对象
 						this.item = {}
 					},
 					deleteItem: function(index) {

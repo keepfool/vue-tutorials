@@ -64,15 +64,15 @@
 						</header>
 
 						<div class="dialog-body">
-						<div v-for="field in fields" class="form-group">
-							<label>{{ field.name }}</label>
-							<select v-if="field.dataSource" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
+							<div v-for="field in fields" class="form-group">
+								<label>{{ field.name }}</label>
+								<select v-if="field.dataSource" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
 									<option v-for="opt in field.dataSource" :value="opt">{{ opt }}</option>
 							</select>
-							<input v-else type="text" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
+								<input v-else type="text" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
+							</div>
 						</div>
-						</div>
-						
+
 						<footer class="dialog-footer">
 							<div class="form-group">
 								<label></label>
@@ -99,7 +99,6 @@
 				},
 				props: ['dataList', 'columns', 'searchKey'],
 				methods: {
-
 					openNewItemDialog: function(title) {
 						// 对话框的标题
 						this.title = title
@@ -110,7 +109,6 @@
 						// 广播事件，showDialog是modal-dialog组件的一个方法，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
-
 					openEditItemDialog: function(index, title) {
 						// 对话框的标题
 						this.title = title
@@ -119,13 +117,27 @@
 						// 初始化this.item
 						this.item = {}
 						// 将选中行的数据拷贝到this.item
-						for (var i in this.dataList[index]) {
-							this.item[i] = this.dataList[index][i]
-						}
+						this.item = this.initItemForUpdate(this.dataList[index])
 						// 广播事件，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
-
+					// 弹出修改数据的对话框时，使用对象的深拷贝
+					initItemForUpdate: function(p) {
+						var c = c || {};
+						for (var i in p) {
+							// 属性i是否为p对象的自有属性
+							if (p.hasOwnProperty(i)) {
+								if (typeof p[i] === 'object') {
+									c[i] = Array.isArray(p[i]) ? [] : {}
+									deepCopy(p[i], c[i])
+								} else {
+									// 属性是基础类型时，直接拷贝
+									c[i] = p[i]
+								}
+							}
+						}
+						return c;
+					},
 					getKeyColumn: function() {
 						for (var i = 0; i < this.columns.length; i++) {
 							if (this.columns[i].isKey) {
@@ -133,7 +145,6 @@
 							}
 						}
 					},
-
 					createItem: function() {
 						// 将item追加到dataList
 						this.dataList.push(this.item)
@@ -143,7 +154,6 @@
 						this.item = {}
 					},
 					updateItem: function() {
-
 						// 获取主键列
 						var keyColumn = this.getKeyColumn()
 
@@ -190,7 +200,7 @@
 								if (this.mode === 1) {
 									// 使用$dispatch调用simple-grid的create-item事件
 									this.$dispatch('create-item')
-								}else if(this.mode === 2){
+								} else if (this.mode === 2) {
 									// 使用$dispatch调用simple-grid的update-item事件
 									this.$dispatch('update-item')
 								}
