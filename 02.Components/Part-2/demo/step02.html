@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="container">
+				<div class="form-group">
+					<label>Search</label>
+					<input type="text" class="search-input" v-model="searchQuery" />
+				</div>
+
+			</div>
+			<div class="container">
+				<simple-grid :data-list="people" :columns="columns" :search-key="searchQuery">
+				</simple-grid>
+			</div>
+		</div>
+
+		<template id="grid-template">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="col in columns">
+							{{ col.name | capitalize}}
+						</th>
+						<th>
+							Delete
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList | filterBy searchKey">
+						<td v-for="col in columns">
+							{{entry[col.name]}}
+						</td>
+						<td class="text-center">
+							<button class="btn-danger" @click="deleteItem(index)">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<modal-dialog :mode="mode" :title="title" :fields="columns" :item="item">
+			</modal-dialog>
+		</template>
+
+		<template id="dialog-template">
+			<div class="dialogs">
+				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
+					<div class="dialog-content">
+						<header class="dialog-header">
+							<h1 class="dialog-title">{{ title }}</h1>
+						</header>
+						<footer class="dialog-footer">
+							<div class="form-group">
+								<label></label>
+								<button class="btn-save" v-on:click="save">Save</button>
+								<button class="btn-close" v-on:click="close">Close</button>
+							</div>
+						</footer>
+					</div>
+				</div>
+				<div class="dialog-overlay"></div>
+			</div>
+		</template>
+
+		<script src="../js/vue.js"></script>
+		<script>
+			Vue.component('simple-grid', {
+				template: '#grid-template',
+				data: function() {
+					return {
+						mode: 0,
+						item: {}
+					}
+				},
+				props: ['dataList', 'columns', 'searchKey'],
+				methods: {
+					deleteItem: function(index) {
+						this.dataList.splice(index, 1);
+					},
+				},
+				components: {
+					'modal-dialog': {
+						template: '#dialog-template',
+						data: function() {
+							return {
+								// 对话框默认是不显示的
+								show: false
+							}
+						},
+						/*
+						 * mode = 1是新增数据模式，mode = 2是修改数据模式
+						 * title表示对话框的标题内容
+						 * fields表示对话框要显示的数据字段数组
+						 * item是由simple-dialog传下来，用于绑定表单字段的
+						 */
+						props: ['mode', 'title', 'fields', 'item'],
+						methods: {
+							close: function() {
+								this.show = false
+							},
+							save: function() {
+
+							}
+						}
+					}
+				}
+			})
+
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					searchQuery: '',
+					columns: [{
+						name: 'name'
+					}, {
+						name: 'age'
+					}, {
+						name: 'sex'
+					}],
+					people: [{
+						name: 'Jack',
+						age: 30,
+						sex: 'Male'
+					}, {
+						name: 'Bill',
+						age: 26,
+						sex: 'Male'
+					}, {
+						name: 'Tracy',
+						age: 22,
+						sex: 'Female'
+					}, {
+						name: 'Chris',
+						age: 36,
+						sex: 'Male'
+					}]
+				}
+			})
+		</script>
+
+	</body>
+
+</html>

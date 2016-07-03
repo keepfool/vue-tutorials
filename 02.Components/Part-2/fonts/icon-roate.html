@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<title>中国站长天空-网页特效-CSS特效-CSS3实现的图标旋转效果分享菜单</title>
+		<meta http-equiv="content-type" content="text/html;charset=gb2312">
+		<!--把下面代码加到<head>与</head>之间-->
+		<link rel="stylesheet" href="iconfont.css" />
+		<style type="text/css">
+			body {
+				margin: 0 0 0 0;
+				background: #696969;
+				color: #1f1f1f;
+				font-family: "Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+				font-size: 16px;
+				font-weight: normal;
+			}
+			
+			.aButton {
+				display: inline-block;
+				transition: .8s ease all;
+				-moz-transition: .8s ease all;
+				-webkit-transition: .8s ease all;
+				border: none;
+				border-radius: 3px;
+				background-color: #fff;
+				color: #0090d3;
+				font-size: 20px;
+				text-decoration: none;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
+			
+			.aButton:hover {
+				transition: .8s ease all;
+				-moz-transition: .8s ease all;
+				-webkit-transition: .8s ease all;
+			}
+			
+			.rotate {
+				cursor: pointer;
+			}
+			
+			.rotate:hover {
+				transform: rotate(360deg);
+				-moz-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
+				transition: transform 1.0s ease all;
+				-moz-transition: -moz-transform 1.0s ease all;
+				-webkit-transition: -webkit-transform 1.0s ease all;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="aButton rotate">
+			<span class="iconfont icon-close"></span>
+		</div>
+
+	</body>
+
+</html>

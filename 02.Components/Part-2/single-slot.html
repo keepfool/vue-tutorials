@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.content {
+				margin: 30px auto;
+				max-width: 480px;
+				border: 1px solid #ccc;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="app">
+			<my-component>
+				<h1>Hello Vue.js!</h1>
+			</my-component>
+
+			<my-component>
+			</my-component>
+		</div>
+		<template id="myComponent">
+			<div class="content">
+				<h2>This is a component!</h2>
+				<slot>如果没有分发内容，则显示slot中的内容</slot>
+				<p>Say something...</p>
+			</div>
+		</template>
+		<script src="js/vue.js"></script>
+		<script>
+			Vue.component('my-component', {
+				template: '#myComponent'
+			})
+
+			new Vue({
+				el: '#app'
+			})
+		</script>
+	</body>
+
+</html>

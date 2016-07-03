@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="container">
+				<div class="form-group">
+					<label>Search</label>
+					<input type="text" class="search-input" v-model="searchQuery" />
+				</div>
+
+			</div>
+			<div class="container">
+				<simple-grid :data-list="people" :columns="columns" :search-key="searchQuery">
+				</simple-grid>
+			</div>
+		</div>
+
+		<template id="grid-template">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="col in columns">
+							{{ col.name | capitalize}}
+						</th>
+						<th>
+							Delete
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList | filterBy searchKey">
+						<td v-for="col in columns">
+							{{entry[col.name]}}
+						</td>
+						<td class="text-center">
+							<button class="btn-danger" @click="deleteItem(index)">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</template>
+
+		<script src="../js/vue.js"></script>
+		<script>
+			Vue.component('simple-grid', {
+				template: '#grid-template',
+				props: ['dataList', 'columns', 'searchKey'],
+
+				methods: {
+					deleteItem: function(index) {
+						this.dataList.splice(index, 1);
+					},
+				}
+			})
+
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					searchQuery: '',
+					columns: [{
+						name: 'name'
+					}, {
+						name: 'age'
+					}, {
+						name: 'sex'
+					}],
+					people: [{
+						name: 'Jack',
+						age: 30,
+						sex: 'Male'
+					}, {
+						name: 'Bill',
+						age: 26,
+						sex: 'Male'
+					}, {
+						name: 'Tracy',
+						age: 22,
+						sex: 'Female'
+					}, {
+						name: 'Chris',
+						age: 36,
+						sex: 'Male'
+					}]
+				}
+			})
+		</script>
+
+	</body>
+
+</html>
