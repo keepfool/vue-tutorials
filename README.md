@@ -45,3 +45,35 @@
 
 ####页面示例
 - [注册组件、过滤表格、父组件传递数据给子组件综合示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-1/simple-demo.html)
+
+###Part-2
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——60分钟组件快速入门（下篇）](http://www.cnblogs.com/keepfool/p/5637834.html)
+
+####slot示例
+
+- [单个slot示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/single-slot.html)
+- [多个slot示例1——对话框](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/dialog-slot.html)
+- [多个slot示例2——多种颜色的对话框](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/dialog-slot-with-class.html)
+- [多个slot示例3——未指定footer的对话框](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/dialog-slot-with-class-no-footer.html)
+
+####父子组件实例访问实例
+
+- [$children示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$children.html)
+- [$ref示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$parent.html)
+- [$parent示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$parent.html)
+
+####父子组件通信示例
+
+- [$dispatch：子组件向父组件派发事件](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$dispatch.html)
+- [$broadcast父组件向子组件广播事件](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$broadcast.html)
+
+####基于组件一步一步实现一个CURD示例
+
+- [第1步：创建表格组件，添加查询和删除功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step01.html)
+- [第2步：创建对话框组件](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step02.html)
+- [第3步：实现数据新建功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step03.html)
+- [第4步：实现数据修改功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step04.html)
+- [第5步：修改数据新建功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step05.html)
+- [第6步：完整示例](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step06.html)
+
