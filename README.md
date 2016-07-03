@@ -57,7 +57,7 @@
 - [多个slot示例2——多种颜色的对话框](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/dialog-slot-with-class.html)
 - [多个slot示例3——未指定footer的对话框](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/dialog-slot-with-class-no-footer.html)
 
-####父子组件实例访问实例
+####父子组件实例访问示例
 
 - [$children示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$children.html)
 - [$ref示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$parent.html)
@@ -66,7 +66,7 @@
 ####父子组件通信示例
 
 - [$dispatch：子组件向父组件派发事件](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$dispatch.html)
-- [$broadcast父组件向子组件广播事件](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$broadcast.html)
+- [$broadcast：父组件向子组件广播事件](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/$broadcast.html)
 
 ####基于组件一步一步实现一个CURD示例
 
