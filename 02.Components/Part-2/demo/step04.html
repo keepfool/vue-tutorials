@@ -5,6 +5,15 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="style.css" />
+		<style>
+			/* 
+			 * 由于IE不支持<template>标签，所以template标签中的内容在IE下会直接显示出来。
+			 * 将模板设为隐藏即可解决这个问题，template标签各浏览器支持请参考：http://caniuse.com/#feat=template
+			 */
+			#grid-template, #dialog-template{
+				display: none;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -22,7 +31,7 @@
 			</div>
 		</div>
 
-		<script type="text/x-template" id="grid-template">
+		<template id="grid-template">
 			<table>
 				<thead>
 					<tr>
@@ -53,9 +62,9 @@
 			<modal-dialog :mode="mode" :title="title" :item="item" :fields="columns" v-on:create-item="createItem" v-on:update-item="updateItem">
 			</modal-dialog>
 
-		</script>
+		</template>
 
-		<script type="text/x-template" id="dialog-template">
+		<template id="dialog-template">
 			<div class="dialogs">
 				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
 					<div class="dialog-content">
@@ -84,7 +93,7 @@
 				</div>
 				<div class="dialog-overlay"></div>
 			</div>
-		</script>
+		</template>
 
 		<script src="../js/vue.js"></script>
 		<script>

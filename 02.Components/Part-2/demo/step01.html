@@ -4,7 +4,16 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="style.css" />		
+		<style>
+			/* 
+			 * 由于IE不支持<template>标签，所以template标签中的内容在IE下会直接显示出来。
+			 * 将模板设为隐藏即可解决这个问题，template标签各浏览器支持请参考：http://caniuse.com/#feat=template
+			 */
+			#grid-template{
+				display: none;
+			}
+		</style>	
 	</head>
 
 	<body>
@@ -22,7 +31,7 @@
 			</div>
 		</div>
 
-		<script type="text/x-template" id="grid-template">
+		<template id="grid-template">
 			<table>
 				<thead>
 					<tr>
@@ -45,7 +54,7 @@
 					</tr>
 				</tbody>
 			</table>
-		</script>
+		</template>
 
 		<script src="../js/vue.js"></script>
 		<script>
