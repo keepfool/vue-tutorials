@@ -22,7 +22,7 @@
 			</div>
 		</div>
 
-		<template id="grid-template">
+		<script type="text/x-template" id="grid-template">
 			<table>
 				<thead>
 					<tr>
@@ -53,9 +53,9 @@
 			<modal-dialog :mode="mode" :title="title" :item="item" :fields="columns" v-on:create-item="createItem" v-on:update-item="updateItem">
 			</modal-dialog>
 
-		</template>
+		</script>
 
-		<template id="dialog-template">
+		<script type="text/x-template" id="dialog-template">
 			<div class="dialogs">
 				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
 					<div class="dialog-content">
@@ -82,7 +82,7 @@
 				</div>
 				<div class="dialog-overlay"></div>
 			</div>
-		</template>
+		</script>
 
 		<script src="../js/vue.js"></script>
 		<script>
@@ -97,7 +97,7 @@
 						item: {}
 					}
 				},
-				ready(){
+				ready: function(){
 					for (var i = 0; i < this.columns.length; i++) {
 						if (this.columns[i].isKey) {
 							this.keyColumn = this.columns[i]['name']
