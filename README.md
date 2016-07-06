@@ -77,3 +77,13 @@
 - [第5步：修改数据新建功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step05.html)
 - [第6步：完整示例](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step06.html)
 
+##Ajax
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——基于$.ajax实现数据的跨域增删查改](http://www.cnblogs.com/keepfool/p/5648674.html)
+###基于jquery或zepto的$.ajax示例
+
+- [$.ajax跨域GET示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-get.html)
+- [$.ajax跨域JSONP示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-jsonp.html)
+- [$.ajax跨域POST示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-post.html)
+- [$.ajax跨域PUT示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-put.html)
+- [$.ajax跨域DELETE示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-delete.html)
