@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+
+	<body>
+
+		<div id="app">
+			<div class="container">
+				<simple-grid :data-list="gridData" :columns="gridColumns" 
+					v-on:load-entry="loadCustomer" 
+					v-on:delete-entry="deleteCustomer">
+				</simple-grid>
+			</div>
+
+			<div class="container">
+				<div class="form-group">
+					<button @click="this.show = true">Create</button>
+				</div>
+			</div>
+
+			<modal-dialog v-bind:show.sync="show">
+
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">{{ item.customerId ? 'Edit Customer - ' + item.contactName : 'Create New Customer' }}</h1>
+				</header>
+
+				<div class="dialog-body" slot="body">
+					<div v-show="item.customerId" class="form-group">
+						<label>Customer Id</label>
+						<input type="text" v-model="item.customerId" disabled="disabled" />
+					</div>
+					<div class="form-group">
+						<label>Company Name</label>
+						<input type="text" v-model="item.companyName" />
+					</div>
+
+					<div class="form-group">
+						<label>Contact Name</label>
+						<input type="text" v-model="item.contactName" />
+					</div>
+
+					<div class="form-group">
+						<label>Phone</label>
+						<input type="text" v-model="item.phone" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="saveCustomer">Save</button>
+					</div>
+				</div>
+
+			</modal-dialog>
+		</div>
+
+		<template id="grid-template">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="col in columns">
+							{{ col.name | capitalize}}
+						</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList">
+						<td v-for="col in columns">
+							<span v-if="col.isKey"><a href="javascript:void(0)" @click="loadEntry(entry[col.name])">{{ entry[col.name] }}</a></span>
+							<span v-else>{{ entry[col.name] }}</span>
+						</td>
+						<td>
+							<button class="btn-danger" @click="deleteEntry(entry)">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</template>
+
+		<template id="dialog-template">
+			<div class="dialogs">
+				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
+					<div class="dialog-content">
+						<div class="close rotate">
+							<span class="iconfont icon-close" @click="close"></span>
+						</div>
+						<slot name="header"></slot>
+						<slot name="body"></slot>
+						<slot name="footer"></slot>
+					</div>
+				</div>
+				<div class="dialog-overlay"></div>
+			</div>
+		</template>
+
+		<script src="js/vue.js"></script>
+		<script src="js/zepto.js"></script>
+		<script src="js/ajax-helper.js"></script>
+		<script>
+			Vue.component('simple-grid', {
+				template: '#grid-template',
+				props: ['dataList', 'columns'],
+				methods: {
+					loadEntry: function(key) {
+						this.$dispatch('load-entry', key)
+					},
+					deleteEntry: function(entry) {
+						this.$dispatch('delete-entry', entry)
+					}
+				}
+			})
+
+			Vue.component('modal-dialog', {
+				template: '#dialog-template',
+				props: ['show'],
+				methods: {
+					close: function() {
+						this.show = false
+					}
+				}
+			})
+		</script>
+		<script>
+			var ajaxHelper = new AjaxHelper()
+
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					show: false,
+					title: '',
+					gridColumns: [{
+						name: 'customerId',
+						isKey: true
+					}, {
+						name: 'companyName'
+					}, {
+						name: 'contactName'
+					}, {
+						name: 'phone'
+					}],
+					gridData: [],
+					apiUrl: 'http://211.149.193.19:8080/api/customers',
+					item: {}
+				},
+				ready: function() {
+					this.getCustomers()
+				},
+				methods: {
+					closeDialog: function() {
+						this.show = false
+					},
+					getCustomers: function() {
+						// 定义vm变量，让它指向this,this是当前的Vue实例
+						var vm = this,
+							success = function(data) {
+								// 由于函数的作用域，这里不能用this
+								vm.$set('gridData', data)
+							}
+						ajaxHelper.get(vm.apiUrl, null, success)
+					},
+					createCustomer: function() {
+						var vm = this,
+							success = function(data) {
+								vm.$set('item', {})
+								vm.getCustomers()
+							}
+						ajaxHelper.post(vm.apiUrl, vm.item, success)
+					},
+					loadCustomer: function(customerId) {
+						var vm = this
+						vm.gridData.forEach(function(item) {
+								if (item.customerId === customerId) {
+									// 使用$.set设置item
+									vm.$set('item', item)
+									return
+								}
+							}),
+							vm.$set('show', true)
+					},
+					saveCustomer: function() {
+						this.item.customerId ? this.updateCustomer() : this.createCustomer()
+						this.show = false
+					},
+					updateCustomer: function() {
+						// 定义vm变量，让它指向this,this是当前的Vue实例
+						var vm = this,
+							callback = function(data) {
+								// 更新成功后，重新加载页面数据
+								vm.getCustomers()
+							}
+							// 将vm.item直接PUT到服务端
+						ajaxHelper.put(vm.apiUrl + '/' + vm.item.customerId, vm.item, callback)
+					},
+					deleteCustomer: function(customer) {
+						// 定义vm变量，让它指向this,this是当前的Vue实例
+						var vm = this,
+							callback = function(data) {
+								// 删除成功后，重新加载页面数据
+								vm.getCustomers()
+							}
+							// 发送DELETE请求到服务端
+						ajaxHelper.delete(vm.apiUrl + '/' + customer.customerId, null, callback)
+					}
+				}
+			})
+			demo.$watch('show', function(newVal, oldVal) {
+				if (!newVal) {
+					this.item = {}
+				}
+			})
+		</script>
+	</body>
+
+</html>
