@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+	<body>
+		<div id="app">
+			<div class="container">
+				<simple-grid :data-list="gridData" :columns="gridColumns">
+				</simple-grid>
+			</div>
+			<div class="container">
+				<div class="form-group">
+					<button @click="this.show = true">Create</button>
+				</div>
+			</div>
+			<modal-dialog v-bind:show.sync="show">
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">Create New Customer</h1>
+				</header>
+				<div class="dialog-body" slot="body">
+					<div v-show="item.customerId" class="form-group">
+						<label>Customer Id</label>
+						<input type="text" v-model="item.customerId" disabled="disabled" />
+					</div>
+					<div class="form-group">
+						<label>Company Name</label>
+						<input type="text" v-model="item.companyName" />
+					</div>
+
+					<div class="form-group">
+						<label>Contact Name</label>
+						<input type="text" v-model="item.contactName" />
+					</div>
+
+					<div class="form-group">
+						<label>Phone</label>
+						<input type="text" v-model="item.phone" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="createCustomer">Save</button>
+					</div>
+				</div>
+			</modal-dialog>
+		</div>
+		<template id="grid-template">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="col in columns">
+							{{ col.name | capitalize}}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList">
+						<td v-for="col in columns">
+							{{ entry[col.name] }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</template>
+
+		<template id="dialog-template">
+			<div class="dialogs">
+				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
+					<div class="dialog-content">
+						<div class="close rotate">
+							<span class="iconfont icon-close" @click="close"></span>
+						</div>
+						<slot name="header"></slot>
+						<slot name="body"></slot>
+						<slot name="footer"></slot>
+					</div>
+				</div>
+				<div class="dialog-overlay"></div>
+			</div>
+		</template>
+
+		<script src="js/vue.js"></script>
+		<script src="js/vue-resource.js"></script>
+		<script>
+			Vue.component('simple-grid', {
+				template: '#grid-template',
+				props: ['dataList', 'columns']
+			})
+
+			Vue.component('modal-dialog', {
+				template: '#dialog-template',
+				props: ['show'],
+				methods: {
+					close: function() {
+						this.show = false
+					}
+				}
+			})
+		</script>
+		<script>
+			Vue.http.options.emulateJSON = true;
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					show: false,
+					gridColumns: [{
+						name: 'customerId',
+						isKey: true
+					}, {
+						name: 'companyName'
+					}, {
+						name: 'contactName'
+					}, {
+						name: 'phone'
+					}],
+					gridData: [],
+					apiUrl: 'http://211.149.193.19:8080/api/customers',
+					item: {}
+				},
+				ready: function() {
+					this.getCustomers()
+				},
+				methods: {
+					closeDialog: function() {
+						this.show = false
+					},
+					getCustomers: function() {
+						var vm = this
+						vm.$http.get(vm.apiUrl)
+							.then((response) => {
+								vm.$set('gridData', response.data)
+							})
+					},
+					createCustomer: function() {
+						var vm = this
+						vm.$http.post(vm.apiUrl, vm.item)
+							.then((response) => {
+								vm.$set('item', {})
+								vm.getCustomers()
+							})
+						this.show = false
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>
