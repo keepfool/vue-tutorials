@@ -87,3 +87,26 @@
 - [$.ajax跨域POST示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-post.html)
 - [$.ajax跨域PUT示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-put.html)
 - [$.ajax跨域DELETE示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/jquery-zepto/ajax-cors-delete.html)
+
+###基于vue-resource的示例
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——vue-resource全攻略](http://www.cnblogs.com/keepfool/p/5657065.html)
+
+####http示例
+- [http get示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/http-get.html)
+- [http jsonp示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/http-jsonp.html)
+- [http post示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/http-post.html)
+- [http put示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/http-put.html)
+- [http delete示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/http-delete.html)
+
+####resouce示例
+- [resource get示例](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/resource-get.html)
+- [resource save示例(HTTP POST)](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/resource-post.html)
+- [resource update示例(HTTP PUT)](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/resource-put.html)
+- [resource remove示例(HTTP DELETE)](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/resource-delete.html)
+
+####inteceptor示例
+- [inteceptor示例1——ajax请求的loading界面](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/inteceptor-demo1.html)
+- [inteceptor实例2——请求失败时的提示对话框](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/inteceptor-demo2.html)
+
+
