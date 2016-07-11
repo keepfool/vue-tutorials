@@ -79,9 +79,13 @@
 		</template>
 	</body>
 	<script src="js/vue.js"></script>
+	<script src="js/vue-resource.js"></script>
 	<script src="js/zepto.js"></script>
 	<script src="js/ajax-helper.js"></script>
 	<script>
+	
+		Vue.http.options.emulateHTTP = true;
+	
 		Vue.component('modal-dialog', {
 			template: '#dialog-template',
 			props: ['show'],
@@ -91,7 +95,7 @@
 				}
 			}
 		})
-
+		
 		var ajaxHelper = new AjaxHelper()
 		var demo = new Vue({
 			el: '#app',
@@ -116,29 +120,49 @@
 			},
 			methods: {
 				register: function() {
-					var vm = this
+					/*var vm = this
 					callback = function() {
 						vm.msg = "register successfully!"
 					}
-					ajaxHelper.post(vm.registerUrl, vm.registerModel, callback)
+					ajaxHelper.post(vm.registerUrl, vm.registerModel, callback)*/
+					var vm = this
+					vm.$http.post(vm.registerUrl, vm.registerModel).then((response) => {
+						vm.msg = "register successfully!"
+					})
 				},
 				login: function() {
 
 					var vm = this
-					callback = function(data) {
-						console.log(data)
-						vm.userName = data.userName
-						vm.accessToken = data.access_token
+						callback = function(data) {
+							console.log(data)
+							vm.userName = data.userName
+							vm.accessToken = data.access_token
+							vm.msg = "login successfully!"
+						}
+						ajaxHelper.post(vm.loginUrl, vm.loginModel, callback)
+					
+					
+					/*var formData = new FormData();
+					formData.append('username', 'speng@abeam.com');
+					formData.append('password', 'P@ssw0rd');
+					formData.append('grant_type','password')
+					vm.$http.post(vm.loginUrl, formData)
+						.then((response) => {
+							vm.userName = response.userName
+						vm.accessToken = response.access_token
 						vm.msg = "login successfully!"
-					}
-					ajaxHelper.post(vm.loginUrl, vm.loginModel, callback)
+						})*/
+
+					/*vm.$http.post(vm.loginUrl, vm.loginModel).then((response) => {
+						
+					})*/
 				},
 				callApi: function() {
 					var vm = this
 					headers = {}
 					headers.Authorization = 'Bearer ' + vm.accessToken;
 
-					$.ajax({
+					/*$.ajax({
 						type: 'get',
 						dataTye: 'json',
 						url: vm.apiUrl,
@@ -150,7 +174,7 @@
 						error: function(xhr, errorType, error){
 							alert('Ajax request error!')
 						}
-					})
+					})*/
 				}
 			}
 		})

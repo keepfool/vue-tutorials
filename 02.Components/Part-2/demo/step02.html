@@ -10,10 +10,12 @@
 			 * 由于IE不支持<template>标签，所以template标签中的内容在IE下会直接显示出来。
 			 * 将模板设为隐藏即可解决这个问题，template标签各浏览器支持请参考：http://caniuse.com/#feat=template
 			 */
-			#grid-template, #dialog-template{
+			
+			#grid-template,
+			#dialog-template {
 				display: none;
 			}
-		</style>	
+		</style>
 	</head>
 
 	<body>
@@ -49,7 +51,7 @@
 							{{entry[col.name]}}
 						</td>
 						<td class="text-center">
-							<button class="btn-danger" @click="deleteItem(index)">delete</button>
+							<button class="btn-danger" @click="deleteItem(entry)">delete</button>
 						</td>
 					</tr>
 				</tbody>
@@ -90,9 +92,15 @@
 				},
 				props: ['dataList', 'columns', 'searchKey'],
 				methods: {
-					deleteItem: function(index) {
-						this.dataList.splice(index, 1);
-					},
+					deleteItem: function(entry) {
+						var data = this.dataList
+						data.forEach(function(item, i) {
+							if(item === entry) {
+								data.splice(i, 1)
+								return
+							}
+						})
+					}
 				},
 				components: {
 					'modal-dialog': {

@@ -50,7 +50,7 @@
 							<span v-else>{{entry[col.name]}}</span>
 						</td>
 						<td class="text-center">
-							<button class="btn-danger" @click="deleteItem(index)">delete</button>
+							<button class="btn-danger" @click="deleteItem(entry)">delete</button>
 						</td>
 					</tr>
 				</tbody>
@@ -204,9 +204,15 @@
 						// 修改完数据后，重置item对象
 						this.item = {}
 					},
-					deleteItem: function(index) {
-						this.dataList.splice(index, 1);
-					},
+					deleteItem: function(entry) {
+						var data = this.dataList
+						data.forEach(function(item, i) {
+							if(item === entry) {
+								data.splice(i, 1)
+								return
+							}
+						})
+					}
 				},
 				components: {
 					'modal-dialog': {
