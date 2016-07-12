@@ -70,12 +70,12 @@
 
 ####基于组件一步一步实现一个CURD示例
 
-- [第1步：创建表格组件，添加查询和删除功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step01.html)
-- [第2步：创建对话框组件](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step02.html)
-- [第3步：实现数据新建功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step03.html)
-- [第4步：实现数据修改功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step04.html)
-- [第5步：修改数据新建功能](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step05.html)
-- [第6步：完整示例](http://127.0.0.1:8020/vue-tutorials/02.Components/Part-2/demo/step06.html)
+- [第1步：创建表格组件，添加查询和删除功能](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step01.html)
+- [第2步：创建对话框组件](https://keepfool.github.io/02.Components/Part-2/demo/step02.html)
+- [第3步：实现数据新建功能](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step03.html)
+- [第4步：实现数据修改功能](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step04.html)
+- [第5步：修改数据新建功能](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step05.html)
+- [第6步：完整示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step06.html)
 
 ##Ajax
 
