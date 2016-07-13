@@ -77,7 +77,7 @@
 - [第5步：修改数据新建功能](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step05.html)
 - [第6步：完整示例](https://keepfool.github.io/vue-tutorials/02.Components/Part-2/demo/step06.html)
 
-##Ajax
+##3. Ajax
 
 以下示例，在博客中有具体讲解，博客链接：[Vue.js——基于$.ajax实现数据的跨域增删查改](http://www.cnblogs.com/keepfool/p/5648674.html)
 ###基于jquery或zepto的$.ajax示例
@@ -109,4 +109,24 @@
 - [inteceptor示例1——ajax请求的loading界面](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/inteceptor-demo1.html)
 - [inteceptor实例2——请求失败时的提示对话框](http://211.149.193.19:8090/vue-tutorials/03.Ajax/vue-resource/inteceptor-demo2.html)
 
+##4. OAuth
 
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——使用$.ajax和vue-resource实现OAuth的注册、登录、注销和API调用](http://www.cnblogs.com/keepfool/p/5665953.html)
+
+###$.ajax示例
+
+- [注册示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/jquery-zepto/step-01.html)
+- [登录和注销示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/jquery-zepto/step-02.html)
+- [登录获取Token并调用API示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/jquery-zepto/step-03.html)
+- [注册、登录、注销、调用API综合示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/jquery-zepto/step-04.html)
+
+###vue-resource示例
+
+- [注册示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/step-01.html)
+- [登录和注销示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/step-02.html)
+- [登录获取Token并调用API示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/step-03.html)
+- [注册、登录、注销、调用API综合示例](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/step-04.html)
+
+###结合CURD、注册、登录、注销的页面示例
+
+[Demo](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/demo.html)
