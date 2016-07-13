@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<div id="app">
+			<div class="container">
+				<span id="message">{{ msg }}</span>
+			</div>
+			<div class="container">
+					<div class="form-group">
+						<label>电子邮箱</label>
+						<input type="text" v-model="registerModel.email" />
+					</div>
+					<div class="form-group">
+						<label>密码</label>
+						<input type="text" v-model="registerModel.password" />
+					</div>
+
+					<div class="form-group">
+						<label>确认密码</label>
+						<input type="text" v-model="registerModel.confirmPassword" />
+					</div>
+
+					<div class="form-group">
+						<label></label>
+						<button @click="register">注册</button>
+					</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/zepto.js"></script>
+
+	<script>
+		var demo = new Vue({
+			el: '#app',
+			data: {
+				registerUrl: 'http://211.149.193.19:8100/api/Account/Register',
+				registerModel: {
+					email: '',
+					password: '',
+					confirmPassword: ''
+				},
+				msg: ''
+			},
+			methods: {
+				register: function() {
+					var vm = this
+					vm.msg = ''
+					
+					$.ajax({
+						url: vm.registerUrl,
+						type: 'POST',
+						dataType: 'json',
+						data: vm.registerModel,
+						success: function() {
+							vm.msg = '注册成功！'
+						},
+						error: vm.requestError
+					})
+				},
+				requestError: function(xhr, errorType, error) {
+					this.msg = xhr.responseText
+				}
+			}
+		})
+	</script>
+
+</html>

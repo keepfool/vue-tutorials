@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<div id="app">
+			<div class="container">
+				<span id="message">{{ msg | json }}</span>
+			</div>
+			<div class="container">
+				<div class="account-info">
+					<span v-if="userName">{{ userName }} | <a href="#" @click="logout">注销</a></span>
+				</div>
+			</div>
+			<div class="container">
+					<div class="form-group">
+						<label>电子邮箱</label>
+						<input type="text" v-model="loginModel.username" placeholder="admin@example.com" />
+					</div>
+					<div class="form-group">
+						<label>密码</label>
+						<input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+					</div>
+				<div class="form-group">
+					<label></label>
+					<button @click="login">登录</button>
+				</div>
+			</div>
+			<div class="splitter"></div>
+			<div class="container text-center">
+				<div>
+					<button @click="callApi">调用API</button>
+				</div>
+				<div class="result">
+					API调用结果：{{ result | json }}
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/vue-resource.js"></script>
+
+	<script>
+		Vue.http.options.emulateJSON = true
+		Vue.http.options.root = 'http://211.149.193.19:8100'
+
+		var demo = new Vue({
+			el: '#app',
+			data: {
+				show: false,
+				loginUrl: 'token',
+				logoutUrl: 'api/Account/Logout',
+				apiUrl: 'api/Values',
+				loginModel: {
+					username: '',
+					password: '',
+					grant_type: 'password'
+				},
+				msg: '',
+				userName: '',
+				result: ''
+			},
+
+			ready: function() {
+				this.userName = sessionStorage.getItem('userName')
+			},
+			methods: {
+				login: function() {
+
+					this.$http.post(this.loginUrl, this.loginModel)
+						.then((response) => {
+							var body = response.json()
+							this.msg = '登录成功！'
+							this.userName = body.userName
+
+							sessionStorage.setItem('accessToken', body.access_token)
+							sessionStorage.setItem('userName', body.userName)
+
+						}).catch(this.requestError)
+				},
+				logout: function() {
+
+					this.$http.post(this.logoutUrl)
+						.then((response) => {
+							this.msg = '注销成功！'
+							this.result = ''
+							this.userName = ''
+							this.loginModel.username = ''
+							this.loginModel.password = ''
+
+							sessionStorage.removeItem('userName')
+							sessionStorage.removeItem('accessToken')
+
+						}).catch(this.requestError)
+				},
+				callApi: function() {
+
+					var headers = {}
+					headers.Authorization = 'Bearer ' + sessionStorage.getItem('accessToken')
+
+					this.$http.get(this.apiUrl, {
+							headers: headers
+						})
+						.then((response) => {
+							this.result = response.json()
+						}).catch(this.requestError)
+				},
+				requestError: function(response) {
+					this.msg = response.json()
+				}
+			}
+		})
+	</script>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<div id="app">
+			<div class="container">
+				<span id="message">{{ msg }}</span>
+			</div>
+			<div class="container">
+				<div class="account-info">
+					<span v-if="userName">{{ userName }} | <a href="#" @click="logout">注销</a></span>
+				</div>
+			</div>
+			<div class="container">
+					<div class="form-group">
+						<label>电子邮箱</label>
+						<input type="text" v-model="loginModel.username" placeholder="admin@example.com" />
+					</div>
+					<div class="form-group">
+						<label>密码</label>
+						<input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="login">登录</button>
+					</div>
+			</div>
+		</div>
+
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/zepto.js"></script>
+
+	<script>
+		var demo = new Vue({
+			el: '#app',
+			data: {
+				loginUrl: 'http://211.149.193.19:8100/token',
+				logoutUrl: 'http://211.149.193.19:8100/api/Account/Logout',
+				loginModel: {
+					userame: '',
+					password: '',
+					grant_type: 'password'
+				},
+				msg: '',
+				userName: ''
+			},
+
+			ready: function() {
+				this.userName = sessionStorage.getItem('userName')
+			},
+			methods: {
+				login: function() {
+					var vm = this
+						vm.msg = ''
+						vm.result = ''
+					
+					$.ajax({
+						url: vm.loginUrl,
+						type: 'POST',
+						dataType: 'json',
+						data: vm.loginModel,
+						success: function(data) {
+							vm.msg = '登录成功！'
+							vm.userName = data.userName
+							sessionStorage.setItem('accessToken', data.access_token)
+							sessionStorage.setItem('userName', vm.userName)
+						},
+						error: vm.requestError
+					})
+				},
+				logout: function() {
+					var vm = this
+						vm.msg = ''
+
+					$.ajax({
+						url: vm.logoutUrl,
+						type: 'POST',
+						dataType: 'json',
+						success: function(data) {
+							
+							vm.msg = '注销成功！'
+							vm.userName = ''
+							vm.loginModel.username = ''
+							vm.loginModel.password = ''
+							
+							sessionStorage.removeItem('userName')
+							sessionStorage.removeItem('accessToken')
+						},
+						error: vm.requestError
+					})
+				},
+				requestError: function(xhr, errorType, error) {
+					this.msg = xhr.responseText
+				}
+			}
+		})
+	</script>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<div id="app">
+			<div class="container">
+				<span id="message">{{ msg }}</span>
+			</div>
+			<div class="container">
+				<div class="account-info">
+					<span v-if="userName">{{ userName }} | <a href="#" @click="logout">注销</a></span>
+				</div>
+			</div>
+			<div class="container">
+				<div class="left">
+					<div class="form-group">
+						<label>电子邮箱</label>
+						<input type="text" v-model="registerModel.email" />
+					</div>
+					<div class="form-group">
+						<label>密码</label>
+						<input type="text" v-model="registerModel.password" />
+					</div>
+
+					<div class="form-group">
+						<label>确认密码</label>
+						<input type="text" v-model="registerModel.confirmPassword" />
+					</div>
+
+					<div class="form-group">
+						<label></label>
+						<button @click="register">注册</button>
+					</div>
+				</div>
+				<div class="right">
+					<div class="form-group">
+						<label>电子邮箱</label>
+						<input type="text" v-model="loginModel.username" placeholder="admin@example.com" />
+					</div>
+					<div class="form-group">
+						<label>密码</label>
+						<input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="login">登录</button>
+					</div>
+				</div>
+			</div>
+			<div class="splitter"></div>
+			<div class="container text-center">
+				<div>
+					<button @click="callApi">调用API</button>
+				</div>
+				<div class="result">
+					API调用结果：{{ result | json }}
+				</div>
+			</div>
+
+		</div>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/zepto.js"></script>
+
+	<script>
+		var demo = new Vue({
+			el: '#app',
+			data: {
+				show: false,
+				registerUrl: 'http://211.149.193.19:8100/api/Account/Register',
+				loginUrl: 'http://211.149.193.19:8100/token',
+				logoutUrl: 'http://211.149.193.19:8100/api/Account/Logout',
+				apiUrl: 'http://211.149.193.19:8100/api/Values',
+				registerModel: {
+					email: '',
+					password: '',
+					confirmPassword: ''
+				},
+				loginModel: {
+					username: '',
+					password: '',
+					grant_type: 'password'
+				},
+				msg: '',
+				userName: '',
+				result: ''
+			},
+
+			ready: function() {
+				this.userName = sessionStorage.getItem('userName')
+			},
+			methods: {
+				register: function() {
+					var vm = this
+					vm.msg = ''
+					vm.result = ''
+
+					$.ajax({
+						url: vm.registerUrl,
+						type: 'POST',
+						dataType: 'json',
+						data: vm.registerModel,
+						success: function() {
+							vm.msg = '注册成功！'
+						},
+						error: vm.requestError
+					})
+				},
+				login: function() {
+					var vm = this
+					vm.msg = ''
+					vm.result = ''
+
+					$.ajax({
+						url: vm.loginUrl,
+						type: 'POST',
+						dataType: 'json',
+						data: vm.loginModel,
+						success: function(data) {
+							vm.msg = '登录成功！'
+							vm.userName = data.userName
+							sessionStorage.setItem('accessToken', data.access_token)
+							sessionStorage.setItem('userName', vm.userName)
+						},
+						error: vm.requestError
+					})
+				},
+				logout: function() {
+					var vm = this
+					vm.msg = ''
+					vm.result = ''
+
+					$.ajax({
+						url: vm.logoutUrl,
+						type: 'POST',
+						dataType: 'json',
+						success: function(data) {
+
+							vm.msg = '注销成功！'
+							vm.userName = ''
+							vm.loginModel.username = ''
+							vm.loginModel.password = ''
+
+							sessionStorage.removeItem('userName')
+							sessionStorage.removeItem('accessToken')
+						},
+						error: vm.requestError
+					})
+				},
+				callApi: function() {
+					var vm = this
+					vm.msg = ''
+					vm.result = ''
+
+					headers = {}
+					headers.Authorization = 'Bearer ' + sessionStorage.getItem('accessToken');
+
+					$.ajax({
+						type: 'get',
+						dataTye: 'json',
+						url: vm.apiUrl,
+						headers: headers,
+						success: function(data) {
+							vm.result = data
+						},
+						error: vm.requestError
+					})
+				},
+				requestError: function(xhr, errorType, error) {
+					this.msg = xhr.responseText
+				}
+			}
+		})
+	</script>
+
+</html>

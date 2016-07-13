@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="fonts/iconfont.css" />
+	</head>
+
+	<body>
+		<div id="app">
+
+			<div class="container">
+				<span id="message">{{ msg | json }}</span>
+			</div>
+			<div class="container">
+				<div class="account-info">
+					<span v-if="userName">{{ userName }} | <a href="#" @click="logout">Logout</a></span>
+					<span v-else><a href="#" @click="popupLogin">Login</a> | <a href="#" @click="popupRegister">Register</a></span>
+				</div>
+			</div>
+
+			<div class="container">
+				<simple-grid :data-list="gridData" :columns="gridColumns" v-on:load-entry="loadCustomer" v-on:delete-entry="deleteCustomer">
+				</simple-grid>
+			</div>
+
+			<div class="container">
+				<div class="form-group">
+					<button @click="this.show = true">Create</button>
+				</div>
+			</div>
+
+			<modal-dialog v-bind:show.sync="show">
+
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">{{ item.customerId ? 'Edit Customer - ' + item.contactName : 'Create New Customer' }}</h1>
+				</header>
+
+				<div class="dialog-body" slot="body">
+					<div v-show="item.customerId" class="form-group">
+						<label>Customer Id</label>
+						<input type="text" v-model="item.customerId" disabled="disabled" />
+					</div>
+					<div class="form-group">
+						<label>Company Name</label>
+						<input type="text" v-model="item.companyName" />
+					</div>
+
+					<div class="form-group">
+						<label>Contact Name</label>
+						<input type="text" v-model="item.contactName" />
+					</div>
+
+					<div class="form-group">
+						<label>Phone</label>
+						<input type="text" v-model="item.phone" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="saveCustomer">Save</button>
+					</div>
+				</div>
+			</modal-dialog>
+
+			<modal-dialog v-bind:show.sync="showLogin">
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">Login</h1>
+				</header>
+
+				<div class="dialog-body" slot="body">
+					<div class="form-group">
+						<label>Email</label>
+						<input type="text" v-model="loginModel.username" />
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input type="text" v-model="loginModel.password" />
+					</div>
+					<div class="form-group">
+						<label></label>
+						<button @click="login">Login</button>
+					</div>
+				</div>
+			</modal-dialog>
+
+			<modal-dialog v-bind:show.sync="showRegister">
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">Register</h1>
+				</header>
+
+				<div class="dialog-body" slot="body">
+					<div class="form-group">
+						<label>Email</label>
+						<input type="text" v-model="registerModel.email" />
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input type="text" v-model="registerModel.password" />
+					</div>
+
+					<div class="form-group">
+						<label>Confirm Password</label>
+						<input type="text" v-model="registerModel.confirmPassword" />
+					</div>
+
+					<div class="form-group">
+						<label></label>
+						<button @click="register">Register</button>
+					</div>
+				</div>
+			</modal-dialog>
+
+		</div>
+
+		<div id="help">
+			<loading v-show="showLoading"></loading>
+			<modal-dialog :show.sync="showDialog">
+				<header class="dialog-header" slot="header">
+					<h1 class="dialog-title">Server Error</h1>
+				</header>
+				<div class="dialog-body" slot="body">
+					<p class="error">Oops,server has got some errors, error code: {{errorCode}}.</p>
+				</div>
+			</modal-dialog>
+		</div>
+
+		<template id="grid-template">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="col in columns">
+							{{ col.name | capitalize}}
+						</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(index,entry) in dataList">
+						<td v-for="col in columns">
+							<span v-if="col.isKey"><a href="javascript:void(0)" @click="loadEntry(entry[col.name])">{{ entry[col.name] }}</a></span>
+							<span v-else>{{ entry[col.name] }}</span>
+						</td>
+						<td>
+							<button class="btn-danger" @click="deleteEntry(entry)">delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</template>
+
+		<template id="dialog-template">
+			<div class="dialogs">
+				<div class="dialog" v-bind:class="{ 'dialog-active': show }">
+					<div class="dialog-content">
+						<div class="close rotate">
+							<span class="iconfont icon-close" @click="close"></span>
+						</div>
+						<slot name="header"></slot>
+						<slot name="body"></slot>
+						<slot name="footer"></slot>
+					</div>
+				</div>
+				<div class="dialog-overlay"></div>
+			</div>
+		</template>
+
+		<template id="loading-template">
+			<div class="loading-overlay">
+				<div class="sk-three-bounce">
+					<div class="sk-child sk-bounce1"></div>
+					<div class="sk-child sk-bounce2"></div>
+					<div class="sk-child sk-bounce3"></div>
+				</div>
+			</div>
+		</template>
+
+		<script src="js/vue.js"></script>
+		<script src="js/vue-resource.js"></script>
+		<script>
+			Vue.component('simple-grid', {
+				template: '#grid-template',
+				props: ['dataList', 'columns'],
+				methods: {
+					loadEntry: function(key) {
+						this.$dispatch('load-entry', key)
+					},
+					deleteEntry: function(entry) {
+						this.$dispatch('delete-entry', entry)
+					}
+				}
+			})
+
+			Vue.component('modal-dialog', {
+				template: '#dialog-template',
+				props: ['show'],
+				methods: {
+					close: function() {
+						this.show = false
+					}
+				}
+			})
+		</script>
+		<script>
+			Vue.http.options.emulateJSON = true
+			Vue.http.options.root = 'http://211.149.193.19:8100'
+
+			var help = new Vue({
+				el: '#help',
+				data: {
+					showLoading: false,
+					showDialog: false,
+					errorCode: ''
+				},
+				components: {
+					'loading': {
+						template: '#loading-template',
+					}
+				}
+			})
+			Vue.http.interceptors.push((request, next) => {
+				
+				
+				if(request.url !== 'token'){
+					request.headers.Authorization = 'Bearer ' + sessionStorage.getItem('accessToken')
+				}
+				help.showLoading = true
+				next((response) => {
+					if(!response.ok) {
+						help.errorCode = response.status
+						help.showDialog = true
+					}
+					help.showLoading = false
+					return response
+				});
+			});
+
+			var demo = new Vue({
+				el: '#app',
+				data: {
+					show: false,
+					showLogin: false,
+					showRegister: false,
+					title: '',
+					gridColumns: [{
+						name: 'customerId',
+						isKey: true
+					}, {
+						name: 'companyName'
+					}, {
+						name: 'contactName'
+					}, {
+						name: 'phone'
+					}],
+					gridData: [],
+					item: {},
+					apiUrl: 'api/customers',
+					registerUrl: 'api/Account/Register',
+					loginUrl: 'token',
+					logoutUrl: 'api/Account/Logout',
+					item: {},
+					registerModel: {
+						email: '',
+						password: '',
+						confirmPassword: ''
+					},
+					loginModel: {
+						username: '',
+						password: '',
+						grant_type: 'password'
+					},
+					registerModel: {
+						email: '',
+						password: '',
+						confirmPassword: ''
+					},
+					userName: '',
+					msg: ''
+				},
+				ready: function() {
+					this.getCustomers()
+					this.userName = sessionStorage.getItem('userName')
+				},
+				methods: {
+					closeDialog: function() {
+						this.show = false
+					},
+					popupRegister: function() {
+						this.showRegister = true
+					},
+					popupLogin: function() {
+						this.showLogin = true
+					},
+					register: function() {
+						this.$http.post(this.registerUrl, this.registerModel)
+							.then((response) => {
+								this.showRegister = false
+								this.msg = 'Register Successfully!'
+							}).catch(this.requestError)
+					},
+					login: function() {
+						this.$http.post(this.loginUrl, this.loginModel, {
+								emulateJSON: true
+							})
+							.then((response) => {
+								var body = response.json()
+								this.userName = body.userName
+								this.showLogin = false
+								this.msg = 'Login Successfully!'
+
+								sessionStorage.setItem('accessToken', body.access_token)
+								sessionStorage.setItem('userName', body.userName)
+
+							}).catch(this.requestError)
+					},
+					logout: function() {
+
+						this.$http.post(this.logoutUrl)
+							.then((response) => {
+								this.msg = 'Logout Successfully!'
+								this.result = ''
+								this.userName = ''
+								this.loginModel.username = ''
+								this.loginModel.password = ''
+
+								sessionStorage.removeItem('userName')
+								sessionStorage.removeItem('accessToken')
+
+							}).catch(this.requestError)
+					},
+					loadCustomer: function(customerId) {
+						var vm = this
+						vm.gridData.forEach(function(item) {
+							if(item.customerId === customerId) {
+								vm.item = item
+								vm.show = true
+								return
+							}
+						})
+					},
+					saveCustomer: function() {
+						this.item.customerId ? this.updateCustomer() : this.createCustomer()
+						this.show = false
+					},
+					getCustomers: function() {
+						this.$http.get(this.apiUrl)
+							.then((response) => {
+								this.gridData = response.data
+							})
+					},
+					createCustomer: function() {
+						this.$http.post(this.apiUrl, this.item)
+							.then((response) => {
+								this.item = {}
+								this.getCustomers()
+							})
+						this.show = false
+					},
+					updateCustomer: function() {
+						this.$http.put(this.apiUrl + '/' + this.item.customerId, this.item)
+							.then((response) => {
+								this.getCustomers()
+							})
+					},
+					deleteCustomer: function(customer) {
+						this.$http.delete(this.apiUrl + '/' + customer.customerId)
+							.then((response) => {
+								this.getCustomers()
+							})
+					},
+					requestError: function(response) {
+						this.msg = response.json()
+					}
+				}
+			})
+			demo.$watch('show', function(newVal, oldVal) {
+				if(!newVal) {
+					this.item = {}
+				}
+			})
+		</script>
+	</body>
+
+</html>
