@@ -1,0 +1,92 @@
+	* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 12px;
+	font-family: Ubuntu, simHei, sans-serif;
+	font-weight: 400;
+}
+
+body{
+	font-size: 1rem;
+}
+
+table,
+th,
+td {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table {
+	width: 100%;
+}
+
+th,
+td {
+	border: 1px solid #BCBCBC;
+	padding: 5px 10px;
+}
+
+th {
+	background: #42B983;
+	font-size: 1.2rem;
+	font-weight: normal;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+tr:nth-of-type(odd) {
+	background: #fff;
+}
+
+tr:nth-of-type(even) {
+	background: #eee;
+}
+
+input{
+	outline: none;
+}
+
+input[type=text]{
+	border: 1px solid #ccc;
+	padding: .5rem .3rem;
+	width: 80%;
+}
+
+input[type=text]:focus{
+	border-color: #42B983;
+}
+
+#app {
+	margin: 20px auto;
+	max-width: 640px;
+}
+
+#searchBar{
+	margin: 10px;
+}
+
+.arrow {
+	display: inline-block;
+	vertical-align: middle;
+	width: 0;
+	height: 0;
+	margin-left: 5px;
+	opacity: 0.66;
+}
+
+.arrow.asc {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-bottom: 4px solid #fff;
+}
+
+.arrow.dsc {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid #fff;
+}
