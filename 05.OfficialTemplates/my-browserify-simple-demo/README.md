@@ -1,6 +1,6 @@
 # my-browserify-simple-demo
 
-> A Vue.js project
+> A Vue.js project based on browserify-simple scaffolding.
 
 ## Build Setup
 
