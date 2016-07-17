@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<h2>This is a grid component built with vue-browserify-simple scaffolding!</h2>
+		<h2>This is a grid component built with vue-webpack-simple scaffolding!</h2>
 		<div id="searchBar">
 			Search <input type="text" v-model="searchQuery" />
 		</div>
@@ -42,8 +42,5 @@
 	}
 </script>
 <style>
-	body {
-		font-family: Helvetica, sans-serif;
-		color: #333;
-	}
+	@import url("./assets/app.css");
 </style>
