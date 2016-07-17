@@ -1,6 +1,6 @@
 # my-webpack-simple-demo
 
-> A Vue.js project
+> 基于vue-webpack-simple模板创建的一个Vue.js项目.
 
 ## Build Setup
 

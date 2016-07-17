@@ -1,6 +1,6 @@
 # my-browserify-simple-demo
 
-> A Vue.js project based on browserify-simple scaffolding.
+> 基于vue-browserify-simple模板创建的一个Vue.js项目.
 
 ## Build Setup
 
