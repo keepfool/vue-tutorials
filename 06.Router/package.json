@@ -13,9 +13,7 @@
 		"demo04-dev": "webpack-dev-server --inline --hot --config demo04/webpack.config.js --content-base demo04 --history-api-fallback",
 		"demo04-build": "cross-env NODE_ENV=production webpack --config demo04/webpack.config.js --progress --hide-modules",
 		"demo05-dev": "webpack-dev-server --inline --hot --config demo05/webpack.config.js --content-base demo05 --history-api-fallback",
-		"demo05-build": "cross-env NODE_ENV=production webpack --config demo05/webpack.config.js --progress --hide-modules",
-		"demo06-dev": "webpack-dev-server --inline --hot --config demo06/webpack.config.js --content-base demo06 --history-api-fallback",
-		"demo06-build": "cross-env NODE_ENV=production webpack --config demo06/webpack.config.js --progress --hide-modules"
+		"demo05-build": "cross-env NODE_ENV=production webpack --config demo05/webpack.config.js --progress --hide-modules"
 	},
 	"dependencies": {
 		"vue": "^1.0.0",
