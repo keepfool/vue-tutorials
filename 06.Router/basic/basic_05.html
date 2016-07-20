@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.css" />
+		<link rel="stylesheet" href="assets/css/custom.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="row">
+				<div class="col-xs-offset-2 col-xs-8">
+					<div class="page-header">
+						<h2>Router Basic - 05</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-2 col-xs-offset-2">
+					<div class="list-group">
+						<a class="list-group-item" v-link="{ path: '/home', activeClass: 'active'}">Home</a>
+						<a class="list-group-item" v-link="{ path: '/about', activeClass: 'active'}">About</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="panel">
+						<div class="panel-body">
+							<router-view></router-view>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<template id="home">
+			<div>
+				<h1>Home</h1>
+				<p>{{msg}}</p>
+			</div>
+			<div>
+				<ul class="nav nav-tabs">
+					<li :class="currentPath == '/home/news' ? 'active': ''">
+						<a v-link="{ path: '/home/news'}">News</a>
+					</li>
+					<li :class="currentPath == '/home/message' ? 'active': ''">
+						<a v-link="{ path: '/home/message'}">Messages</a>
+					</li>
+				</ul>
+				<router-view></router-view>
+			</div>
+		</template>
+
+		<template id="about">
+			<div>
+				<h1>About</h1>
+				<p>This is the tutorial about vue-router.</p>
+			</div>
+		</template>
+
+		<template id="news">
+			<div>
+				<ul>
+					<li>News 01</li>
+					<li>News 02</li>
+					<li>News 03</li>
+				</ul>
+			</div>
+
+		</template>
+		<template id="message">
+			<ul>
+				<li>Message 01</li>
+				<li>Message 02</li>
+				<li>Message 03</li>
+			</ul>
+		</template>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/vue-router.js"></script>
+	<script>
+		var Home = Vue.extend({
+			template: '#home',
+			data: function() {
+				return {
+					msg: 'Hello, vue router!',
+					currentPath: ''
+				}
+			},
+			route: {
+				data: function(transition){
+					transition.next({
+						currentPath: transition.to.path
+					})
+				}
+			}
+		})
+
+		var News = Vue.extend({
+			template: '#news'
+		})
+
+		var Message = Vue.extend({
+			template: '#message'
+		})
+
+		var About = Vue.extend({
+			template: '#about'
+		})
+
+		var router = new VueRouter()
+		router.redirect({
+			'/': '/home'
+		})
+		router.map({
+			'/home': {
+				component: Home,
+				subRoutes: {
+					'/news': {
+						component: News
+					},
+					'/message': {
+						component: Message
+					}
+				}
+			},
+			'/about': {
+				component: About
+			}
+		})
+
+		var App = Vue.extend({})
+		router.start(App, '#app')
+	</script>
+
+</html>

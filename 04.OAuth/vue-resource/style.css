@@ -103,6 +103,10 @@ template {
 	max-width: 640px;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 #message {
 	color: #ff0000;
 }

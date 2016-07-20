@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.css"/>
+		<link rel="stylesheet" href="assets/css/custom.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="row">
+				<div class="col-xs-offset-2 col-xs-8">
+					<div class="page-header">
+						<h2>Router Basic - 01</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-2 col-xs-offset-2">
+					<div class="list-group">
+						<!--使用指令v-link进行导航-->
+						<a class="list-group-item" v-link="{ path: '/home'}">Home</a>
+						<a class="list-group-item" v-link="{ path: '/about'}">About</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="panel">
+						<div class="panel-body">
+							<!--用于渲染匹配的组件-->
+							<router-view></router-view>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<template id="home">
+			<div>
+				<h1>Home</h1>
+				<p>{{msg}}</p>
+			</div>
+		</template>
+		<template id="about">
+			<div>
+				<h1>About</h1>
+				<p>This is the tutorial about vue-router.</p>
+			</div>
+		</template>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/vue-router.js"></script>
+	<script>
+		/* 创建组件构造器  */
+		var Home = Vue.extend({
+			template: '#home',
+			data: function() {
+				return {
+					msg: 'Hello, vue router!'
+				}
+			}
+		})
+
+		var About = Vue.extend({
+			template: '#about'
+		})
+
+		/* 创建路由器  */
+		var router = new VueRouter()
+		
+		/* 创建路由映射  */
+		router.map({
+			'/home': {
+				component: Home
+			},
+			'/about': {
+				component: About
+			}
+		})
+		
+		router.redirect({
+			'/': '/home'
+		})
+
+		/* 启动路由  */
+		var App = Vue.extend({})
+		router.start(App, '#app')
+	</script>
+
+</html>

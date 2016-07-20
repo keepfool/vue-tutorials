@@ -1,0 +1,18 @@
+body {
+	font-family: "Lato","Hiragino Sans GB", "Helvetica Neue", "Micrsoft YaHei", sans-serif;
+	background-color: #f7f8f9;
+}
+
+ul {
+	margin-top: 10px;
+}
+
+p {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.well{
+	max-height: 400px;
+	overflow-y: scroll;
+}

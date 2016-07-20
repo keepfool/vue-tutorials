@@ -1,0 +1,43 @@
+{
+	"name": "demo",
+	"description": "A Vue.js project",
+	"author": "keepfool <crmug@outlook.com>",
+	"private": true,
+	"scripts": {
+		"demo01-dev": "webpack-dev-server --inline --hot --config demo01/webpack.config.js --content-base demo01 --history-api-fallback",
+		"demo01-build": "cross-env NODE_ENV=production webpack --config demo01/webpack.config.js --progress --hide-modules",
+		"demo02-dev": "webpack-dev-server --inline --hot --config demo02/webpack.config.js --content-base demo02 --history-api-fallback",
+		"demo02-build": "cross-env NODE_ENV=production webpack --config demo02/webpack.config.js --progress --hide-modules",
+		"demo03-dev": "webpack-dev-server --inline --hot --config demo03/webpack.config.js --content-base demo03 --history-api-fallback",
+		"demo03-build": "cross-env NODE_ENV=production webpack --config demo03/webpack.config.js --progress --hide-modules",
+		"demo04-dev": "webpack-dev-server --inline --hot --config demo04/webpack.config.js --content-base demo04 --history-api-fallback",
+		"demo04-build": "cross-env NODE_ENV=production webpack --config demo04/webpack.config.js --progress --hide-modules",
+		"demo05-dev": "webpack-dev-server --inline --hot --config demo05/webpack.config.js --content-base demo05 --history-api-fallback",
+		"demo05-build": "cross-env NODE_ENV=production webpack --config demo05/webpack.config.js --progress --hide-modules",
+		"demo06-dev": "webpack-dev-server --inline --hot --config demo06/webpack.config.js --content-base demo06 --history-api-fallback",
+		"demo06-build": "cross-env NODE_ENV=production webpack --config demo06/webpack.config.js --progress --hide-modules"
+	},
+	"dependencies": {
+		"vue": "^1.0.0",
+		"babel-runtime": "^6.0.0"
+	},
+	"devDependencies": {
+		"babel-core": "^6.0.0",
+		"babel-loader": "^6.0.0",
+		"babel-plugin-transform-runtime": "^6.0.0",
+		"babel-preset-es2015": "^6.0.0",
+		"babel-preset-stage-2": "^6.0.0",
+		"cross-env": "^1.0.6",
+		"css-loader": "^0.23.0",
+		"file-loader": "^0.8.4",
+		"json-loader": "^0.5.4",
+		"url-loader": "^0.5.7",
+		"vue-hot-reload-api": "^1.2.0",
+		"vue-html-loader": "^1.0.0",
+		"vue-loader": "^8.2.1",
+		"vue-style-loader": "^1.0.0",
+		"vue-router": "^0.7.13",
+		"webpack": "^1.12.2",
+		"webpack-dev-server": "^1.12.0"
+	}
+}

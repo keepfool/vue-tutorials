@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.css" />
+		<link rel="stylesheet" href="assets/css/custom.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="row">
+				<div class="col-xs-offset-2 col-xs-8">
+					<div class="page-header">
+						<h2>Router Basic - 04</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-2 col-xs-offset-2">
+					<div class="list-group">
+						<a class="list-group-item" v-link="{ path: '/home'}">Home</a>
+						<a class="list-group-item" v-link="{ path: '/about'}">About</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="panel">
+						<div class="panel-body">
+							<router-view></router-view>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-offset-2 col-xs-8">
+					<div class="well">
+						<p>当前路径：<code>{{$route.path}}</code></p>
+						<p>当前参数：<code>{{$route.params | json}}</code></p>
+						<p>路由名称：<code>{{$route.name}}</code></p>
+						<p>路由查询参数：<code>{{$route.query | json}}</code></p>
+						<!--<p>路由匹配项：<code>{{$route.matched | json}}</code></p>-->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<template id="home">
+			<div>
+				<h1>Home</h1>
+				<p>{{msg}}</p>
+			</div>
+			<div>
+				<ul class="nav nav-tabs">
+					<li>
+						<a v-link="{ name: 'news'}">News</a>
+					</li>
+					<li>
+						<a v-link="{ path: '/home/message'}">Messages</a>
+					</li>
+				</ul>
+				<router-view></router-view>
+			</div>
+		</template>
+
+		<template id="news">
+			<div>
+				<ul>
+					<li>
+						<a v-link="{ path: '/home/news/detail/01?favorite=yes'}">News 01</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" @click="viewDetail">News 02</a>
+					</li>
+					<li>
+						<a v-link="{ path: '/home/news/detail/03'}">News 03</a>
+					</li>
+				</ul>
+				<div>
+					<router-view></router-view>
+				</div>
+			</div>
+		</template>
+		<template id="newsDetail">
+			<div>
+				News Detail - {{$route.params.id}} ......
+			</div>
+		</template>
+
+		<template id="message">
+			<ul>
+				<li>Message 01</li>
+				<li>Message 02</li>
+				<li>Message 03</li>
+			</ul>
+		</template>
+
+		<template id="about">
+			<div>
+				<h1>About</h1>
+				<p>This is the tutorial about vue-router.</p>
+			</div>
+		</template>
+
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/vue-router.js"></script>
+	<script>
+		var Home = Vue.extend({
+			template: '#home',
+			data: function() {
+				return {
+					msg: 'Hello, vue router!'
+				}
+			}
+		})
+
+		var News = Vue.extend({
+			template: '#news',
+			methods: {
+				viewDetail: function() {
+					this.$route.router.go({
+						name: 'detail',
+						params: {
+							id: '02'
+						}
+					})
+				}
+			}
+		})
+
+		var NewsDetail = Vue.extend({
+			template: '#newsDetail'
+		})
+
+		var Message = Vue.extend({
+			template: '#message'
+		})
+
+		var About = Vue.extend({
+			template: '#about'
+		})
+
+		var router = new VueRouter()
+		router.redirect({
+			'/': '/home'
+		})
+		router.map({
+			'/home': {
+				component: Home,
+				subRoutes: {
+					'/news': {
+						name: 'news',
+						component: News,
+						subRoutes: {
+							'detail/:id': {
+								name: 'detail',
+								component: NewsDetail
+							}
+						}
+					},
+					'/message': {
+						component: Message
+					}
+				}
+			},
+			'/about': {
+				component: About
+			}
+		})
+
+		var App = Vue.extend({})
+		router.start(App, '#app')
+	</script>
+
+</html>
