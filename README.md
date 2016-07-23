@@ -130,3 +130,42 @@
 ###结合CURD、注册、登录、注销的页面示例
 
 [Demo](http://211.149.193.19:8090/vue-tutorials/04.OAuth/vue-resource/demo.html)
+
+##5.官方项目模板
+
+###Browserify项目模板
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——60分钟browserify项目模板快速入门](http://www.cnblogs.com/keepfool/p/5677032.html)
+
+
+- [vue-browserify-simple模板示例](https://keepfool.github.io/vue-tutorials/05.OfficialTemplates/my-browserify-simple-demo/)
+
+###Webpack项目模板
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——60分钟webpack项目模板快速入门](http://www.cnblogs.com/keepfool/p/5678427.html)
+
+
+- [vue-webpack-simple模板示例](https://keepfool.github.io/vue-tutorials/05.OfficialTemplates/my-webpack-simple-demo/)
+
+##6.Vue-Router
+
+以下示例，在博客中有具体讲解，博客链接：[Vue.js——vue-router 60分钟快速入门](http://www.cnblogs.com/keepfool/p/5690366.html)
+
+- [第一个单页面应用](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_01.html)
+- [嵌套路由示例](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_02.html)
+- [具名路径示例](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_03.html)
+- [路由对象示例](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_04.html)
+- [让链接处于选中状态示例](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_05.html)
+- [钩子函数示例](https://keepfool.github.io/vue-tutorials/06.Router/basic/basic_06.html)
+
+###乞丐版源码（页面和组件代码混合在一起）
+
+[乞丐版源码](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/basic)
+
+###精装版源码（基于vue-webpack-simple模板构建）
+
+- [精装版源码-demo01](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/demo01)
+- [精装版源码-demo02](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/demo02)
+- [精装版源码-demo03](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/demo03)
+- [精装版源码-demo04](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/demo04)
+- [精装版源码-demo05](https://github.com/keepfool/vue-tutorials/tree/master/06.Router/demo05)
