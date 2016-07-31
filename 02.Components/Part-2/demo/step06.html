@@ -174,16 +174,19 @@
 						// 广播事件，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
-					
 					// 弹出修改数据的对话框时，使用对象的深拷贝
-					initItemForUpdate: function(p) {
-						var c = c || {};
-						for (var i in p) {
+					initItemForUpdate(p, c) {
+						c = c || {};
+						for(var i in p) {
 							// 属性i是否为p对象的自有属性
-							if (p.hasOwnProperty(i)) {
-								if (typeof p[i] === 'object') {
+							if(p.hasOwnProperty(i)) {
+								// 属性i是否为复杂类型
+								if(typeof p[i] === 'object') {
+									// 如果p[i]是数组，则创建一个新数组
+									// 如果p[i]是普通对象，则创建一个新对象
 									c[i] = Array.isArray(p[i]) ? [] : {};
-									deepCopy(p[i], c[i]);
+									// 递归拷贝复杂类型的属性
+									this.initItemForUpdate(p[i], c[i]);
 								} else {
 									// 属性是基础类型时，直接拷贝
 									c[i] = p[i];

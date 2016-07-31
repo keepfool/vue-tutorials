@@ -10,7 +10,9 @@
 			 * 由于IE不支持<template>标签，所以template标签中的内容在IE下会直接显示出来。
 			 * 将模板设为隐藏即可解决这个问题，template标签各浏览器支持请参考：http://caniuse.com/#feat=template
 			 */
-			#grid-template, #dialog-template{
+			
+			#grid-template,
+			#dialog-template {
 				display: none;
 			}
 		</style>
@@ -75,7 +77,7 @@
 							<div v-for="field in fields" class="form-group">
 								<label>{{ field.name }}</label>
 								<select v-if="field.dataSource" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
-										<option v-for="opt in field.dataSource" :value="opt">{{ opt }}</option>
+									<option v-for="opt in field.dataSource" :value="opt">{{ opt }}</option>
 								</select>
 								<input v-else type="text" v-model="item[field.name]" :disabled="mode === 2 && field.isKey">
 							</div>
@@ -106,9 +108,9 @@
 						item: {}
 					}
 				},
-				ready: function(){
-					for (var i = 0; i < this.columns.length; i++) {
-						if (this.columns[i].isKey) {
+				ready: function() {
+					for(var i = 0; i < this.columns.length; i++) {
+						if(this.columns[i].isKey) {
 							this.keyColumn = this.columns[i]['name']
 							break;
 						}
@@ -137,16 +139,19 @@
 						// 广播事件，传入参数true表示显示对话框
 						this.$broadcast('showDialog', true)
 					},
-					
 					// 弹出修改数据的对话框时，使用对象的深拷贝
-					initItemForUpdate: function(p) {
-						var c = c || {};
-						for (var i in p) {
+					initItemForUpdate(p, c) {
+						c = c || {};
+						for(var i in p) {
 							// 属性i是否为p对象的自有属性
-							if (p.hasOwnProperty(i)) {
-								if (typeof p[i] === 'object') {
+							if(p.hasOwnProperty(i)) {
+								// 属性i是否为复杂类型
+								if(typeof p[i] === 'object') {
+									// 如果p[i]是数组，则创建一个新数组
+									// 如果p[i]是普通对象，则创建一个新对象
 									c[i] = Array.isArray(p[i]) ? [] : {};
-									deepCopy(p[i], c[i]);
+									// 递归拷贝复杂类型的属性
+									this.initItemForUpdate(p[i], c[i]);
 								} else {
 									// 属性是基础类型时，直接拷贝
 									c[i] = p[i];
@@ -155,25 +160,25 @@
 						}
 						return c;
 					},
-					findItemByKey: function(key){
+					findItemByKey: function(key) {
 						var keyColumn = this.keyColumn
-						for(var i = 0; i < this.dataList.length; i++){
-							if(this.dataList[i][keyColumn] === key){
+						for(var i = 0; i < this.dataList.length; i++) {
+							if(this.dataList[i][keyColumn] === key) {
 								return this.dataList[i]
 							}
 						}
 					},
 					itemExists: function() {
 						var keyColumn = this.keyColumn
-						for (var i = 0; i < this.dataList.length; i++) {
-							if (this.item[keyColumn] === this.dataList[i][keyColumn])
+						for(var i = 0; i < this.dataList.length; i++) {
+							if(this.item[keyColumn] === this.dataList[i][keyColumn])
 								return true;
 						}
 						return false;
 					},
 					createItem: function() {
 						var keyColumn = this.keyColumn
-						if (!this.itemExists()) {
+						if(!this.itemExists()) {
 							// 将item追加到dataList
 							this.dataList.push(this.item)
 							// 广播事件，传入参数false表示隐藏对话框
@@ -190,10 +195,10 @@
 						// 获取主键列
 						var keyColumn = this.keyColumn
 
-						for (var i = 0; i < this.dataList.length; i++) {
+						for(var i = 0; i < this.dataList.length; i++) {
 							// 根据主键查找要修改的数据，然后将this.item数据更新到this.dataList[i]
-							if (this.dataList[i][keyColumn] === this.item[keyColumn]) {
-								for (var j in this.item) {
+							if(this.dataList[i][keyColumn] === this.item[keyColumn]) {
+								for(var j in this.item) {
 									this.dataList[i][j] = this.item[j]
 								}
 								break;
@@ -201,7 +206,7 @@
 						}
 						// 广播事件，传入参数false表示隐藏对话框
 						this.$broadcast('showDialog', false)
-						// 修改完数据后，重置item对象
+							// 修改完数据后，重置item对象
 						this.item = {}
 					},
 					deleteItem: function(entry) {
@@ -235,10 +240,10 @@
 								this.show = false
 							},
 							save: function() {
-								if (this.mode === 1) {
+								if(this.mode === 1) {
 									// 使用$dispatch调用simple-grid的create-item事件
 									this.$dispatch('create-item')
-								} else if (this.mode === 2) {
+								} else if(this.mode === 2) {
 									// 使用$dispatch调用simple-grid的update-item事件
 									this.$dispatch('update-item')
 								}
