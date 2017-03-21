@@ -14,7 +14,7 @@
 - [v-else指令示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/v-else.html)
 - [v-for指令示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/v-for.html)
 - [v-bind指令示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/v-bind.html)
-- [v-on指令示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/v-if.html)
+- [v-on指令示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/v-on.html)
 
 #### 页面示例
 - [循环列表、双向绑定、添加数据、删除数据综合示例](https://keepfool.github.io/vue-tutorials/01.GettingStarted/simple-demo.html)
